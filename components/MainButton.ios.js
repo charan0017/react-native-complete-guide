@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+
 import Colors from '../contants/colors';
 
 const MainButton = ({ children, onPress }) => {

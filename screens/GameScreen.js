@@ -6,6 +6,7 @@ import BodyText from '../components/BodyText';
 import Card from '../components/Card';
 import NumberContainer from '../components/NumberContainer';
 import MainButton from '../components/MainButton';
+import { ScreenOrientation } from 'expo';
 
 function generateRandomBetween(min, max, exclude) {
     min = Math.ceil(min);
@@ -25,11 +26,28 @@ const renderListItem = (value, numOfRound) => (
 );
 
 const GameScreen = ({ userChoice, onGameOver }) => {
+    // ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+
     const initialGuess = generateRandomBetween(1, 100, userChoice);
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
     const [pastGuesses, setPastGuesses] = useState([initialGuess.toString()]);
     const currentLow = useRef(1);
     const currentHigh = useRef(100);
+    const [availableDeviceWidth, setAvailableDeviceWidth] = useState(
+        Dimensions.get('window').width
+    );
+    const [availableDeviceHeight, setAvailableDeviceHeight] = useState(
+        Dimensions.get('window').height
+    );
+
+    useEffect(() => {
+        const updateLayout = () => {
+            setAvailableDeviceWidth(Dimensions.get('window').width);
+            setAvailableDeviceHeight(Dimensions.get('window').height);
+        };
+        Dimensions.addEventListener('change', updateLayout);
+        return () => Dimensions.removeEventListener('change', updateLayout);
+    });
 
     useEffect(() => {
         if (currentGuess === userChoice) {
@@ -54,6 +72,37 @@ const GameScreen = ({ userChoice, onGameOver }) => {
         }
         setCurrentGuess(generateRandomBetween(currentLow.current, currentHigh.current, currentGuess));
     };
+
+    let listContainerStyle = styles.listContainer;
+
+    if (availableDeviceWidth < 350) {
+        listContainerStyle = styles.listContainerBig;
+    }
+
+    if (availableDeviceHeight < 500) {
+        return (
+            <View style={styles.screen}>
+                <BodyText>Opponent's Guess</BodyText>
+                <View style={styles.controls}>
+                    <MainButton onPress={nextGuessHandler.bind(this, 'lower')}>
+                        <Ionicons name="md-remove" size={24} color="white" />
+                    </MainButton>
+                    <NumberContainer>{currentGuess}</NumberContainer>
+                    <MainButton onPress={nextGuessHandler.bind(this, 'greater')}>
+                        <Ionicons name="md-add" size={24} color="white" />
+                    </MainButton>
+                </View>
+                <View style={listContainerStyle}>
+                    <FlatList
+                        contentContainerStyle={styles.list}
+                        keyExtractor={(item, index) => index.toString()}
+                        data={pastGuesses}
+                        renderItem={({ item, index }) => renderListItem(item, pastGuesses.length - index)}
+                    />
+                </View>
+            </View>
+        );
+    }
 
     return (
         <View style={styles.gameScreen}>
@@ -83,6 +132,11 @@ const GameScreen = ({ userChoice, onGameOver }) => {
 };
 
 const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        padding: 10,
+        alignItems: 'center'
+    },
     gameScreen: {
         flex: 1,
         padding: 10,
@@ -95,9 +149,19 @@ const styles = StyleSheet.create({
         width: 300,
         maxWidth: '90%'
     },
+    controls: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: '80%'
+    },
     listContainer: {
         flex: 1,
-        width: Dimensions.get('window').width > 350 ? '60%' : '80%'
+        width: '60%'
+    },
+    listContainerBig: {
+        flex: 1,
+        width: '80%'
     },
     list: {
         flexGrow: 1,
