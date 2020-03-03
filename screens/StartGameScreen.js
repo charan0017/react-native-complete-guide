@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { View, StyleSheet, Button, TouchableWithoutFeedback, Keyboard, Alert, Dimensions } from 'react-native';
 
 import TitleText from '../components/TitleText';
 import BodyText from '../components/BodyText';
@@ -90,8 +90,9 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     inputContainer: {
-        width: 300,
-        maxWidth: '80%',
+        width: '80%',
+        maxWidth: '95%',
+        minWidth: 300,
         alignItems: 'center'
     },
     input: {
@@ -102,10 +103,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         justifyContent: 'space-between',
-        paddingHorizontal: 5
+        paddingHorizontal: 15
     },
     button: {
-        width: 80
+        // width: 100
+        width: Dimensions.get('window').width / 4
     },
     summaryContainer: {
         marginTop: 20,
