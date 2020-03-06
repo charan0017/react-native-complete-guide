@@ -1,11 +1,10 @@
 import React from 'react';
-import {Platform, Text} from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
+import { Platform, Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../../constants/Colors';
-import FavoritesScreen from '../../screens/FavoritesScreen';
+import { FavoritesScreen, MealsDetailScreen } from '../../screens';
 import CreateStackNavigator from './CreateStackNavigator';
-import MealsDetailScreen from '../../screens/MealsDetailScreen';
 
 const screens = [
     { name: 'Favorites', component: FavoritesScreen },

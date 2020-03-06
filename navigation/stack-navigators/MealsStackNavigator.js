@@ -1,11 +1,9 @@
 import React from 'react';
-import {Platform, Text} from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
+import { Platform, Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../../constants/Colors';
-import CategoriesScreen from '../../screens/CategoriesScreen';
-import CategoryMealsScreen from '../../screens/CategoryMealsScreen';
-import MealsDetailScreen from '../../screens/MealsDetailScreen';
+import { CategoriesScreen, CategoryMealsScreen, MealsDetailScreen } from '../../screens';
 import CreateStackNavigator from './CreateStackNavigator';
 
 const screens = [

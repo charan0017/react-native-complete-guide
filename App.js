@@ -4,8 +4,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
-// import MealsNavigator from './navigation/MealsNavigator';
-import MainNavigator from './navigation/MainNavigator';
+// import { MealsNavigator } from './navigation/';
+import { MainNavigator } from './navigation/';
 
 enableScreens();
 

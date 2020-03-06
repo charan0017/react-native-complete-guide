@@ -1,7 +1,7 @@
 import React from 'react';
-import {Platform} from 'react-native';
-import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { Platform } from 'react-native';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Colors from '../../constants/Colors';
 import CreateScreen from '../CreateScreen';

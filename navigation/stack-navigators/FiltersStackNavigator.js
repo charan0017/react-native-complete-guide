@@ -1,6 +1,6 @@
 import React from 'react';
 
-import FiltersScreen from '../../screens/FiltersScreen';
+import { FiltersScreen } from '../../screens';
 import CreateStackNavigator from './CreateStackNavigator';
 
 const screens = [

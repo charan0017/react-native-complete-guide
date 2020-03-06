@@ -8,11 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
-import CategoriesScreen from '../screens/CategoriesScreen';
-import CategoryMealsScreen from '../screens/CategoryMealsScreen';
-import MealsDetailScreen from '../screens/MealsDetailScreen';
-import FavoritesScreen from '../screens/FavoritesScreen';
-import FiltersScreen from '../screens/FiltersScreen';
+import { CategoriesScreen, CategoryMealsScreen, MealsDetailScreen, FavoritesScreen, FiltersScreen } from '../screens';
 
 const screenOptions = {
     gestureEnabled: false,
@@ -107,6 +103,5 @@ function MealsNavigator() {
         </NavigationContainer>
     );
 }
-
 
 export default MealsNavigator;
