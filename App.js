@@ -1,24 +1,32 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { enableScreens } from 'react-native-screens';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
 
-const App = () => {
-    return (
-        <View style={styles.container}>
-            <Text style={styles.text}>Its the base layout to clone for different branches</Text>
-        </View>
-    );
+import MealsNavigator from './navigation/MealsNavigator';
+
+enableScreens();
+
+const fetchFonts = () => {
+    return Font.loadAsync({
+        'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+        'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+    });
 };
 
-const styles = StyleSheet.create({
-    container: {
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    text: {
-        padding: 10,
-        fontSize: 12
+const App = () => {
+    const [fontLoaded, setFontLoaded] = useState(false);
+
+    if (!fontLoaded) {
+        return <AppLoading startAsync={fetchFonts} onFinish={() => setFontLoaded(true)} />;
     }
-});
+
+    return (
+        <SafeAreaProvider>
+            {MealsNavigator()}
+        </SafeAreaProvider>
+    );
+};
 
 export default App;
