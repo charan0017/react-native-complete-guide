@@ -1,10 +1,11 @@
-import React, {useLayoutEffect} from 'react';
-import {ScrollView, View, Image, Text, StyleSheet} from 'react-native';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { ScrollView, View, Image, Text, StyleSheet } from 'react-native';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
-import {MEALS} from '../data/dummy-data';
 import HeaderButton from '../components/HeaderButton';
 import DefaultText from '../components/DefaultText';
+import {toggleFavorite} from '../store/actions/meals';
 
 const ListItem = ({ children }) => (
     <View style={styles.listItem}>
@@ -15,12 +16,35 @@ const ListItem = ({ children }) => (
 const renderList = (listData) => listData.map(listItem => <ListItem key={listItem}>{listItem}</ListItem>);
 
 const MealsDetailScreen = ({ navigation, route }) => {
+    const availableMeals = useSelector(state => state.meals.filteredMeals);
     const mealId = route.params?.mealId ?? null;
-    const selectedMeal = MEALS.find(({ id }) => id === mealId) || {};
+    const selectedMeal = availableMeals.find(({ id }) => id === mealId) || {};
+    const [mealIsFavorite, setMealIsFavorite] = useState(route.params?.mealIsFavorite ?? false);
+
+    const dispatch = useDispatch();
+    const toggleFavoriteHandler = () => {
+        dispatch(toggleFavorite(selectedMeal.id));
+        setMealIsFavorite(currMealIsFav => !currMealIsFav);
+    };
 
     useLayoutEffect(() => {
-        navigation.setOptions({ title: selectedMeal.title || 'Meals' });
+        navigation.setOptions({
+            title: selectedMeal.title || 'Meals'
+        });
     }, [navigation, selectedMeal]);
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <HeaderButtons HeaderButtonComponent={HeaderButton} title='Favorite Btns'>
+                    <Item title='Favorite'
+                          iconName={mealIsFavorite ? 'ios-star' : 'ios-star-outline'}
+                          onPress={toggleFavoriteHandler}
+                    />
+                </HeaderButtons>
+            )
+        });
+    }, [navigation, mealIsFavorite, toggleFavoriteHandler]);
 
     return (
         <ScrollView layoutStyle={styles.screen}>
@@ -39,12 +63,7 @@ const MealsDetailScreen = ({ navigation, route }) => {
 };
 
 MealsDetailScreen.navigationOptions = {
-    title: 'Meal Details',
-    headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={HeaderButton} title='Favorite Btns'>
-            <Item title='Favorite' iconName='ios-star' onPress={() => console.log('Favorite Pressed!')} />
-        </HeaderButtons>
-    )
+    title: 'Meal Details'
 };
 
 const styles = StyleSheet.create({

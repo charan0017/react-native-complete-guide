@@ -3,11 +3,19 @@ import { enableScreens } from 'react-native-screens';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
 
 // import { MealsNavigator } from './navigation/';
 import { MainNavigator } from './navigation/';
+import mealsReducer from './store/reducers/meals';
 
 enableScreens();
+
+const rootReducer = combineReducers({
+    meals: mealsReducer,
+});
+const store = createStore(rootReducer);
 
 const fetchFonts = () => {
     return Font.loadAsync({
@@ -25,7 +33,9 @@ const App = () => {
 
     return (
         <SafeAreaProvider>
-            <MainNavigator />
+            <Provider store={store}>
+                <MainNavigator />
+            </Provider>
         </SafeAreaProvider>
     );
 };

@@ -1,9 +1,11 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, Switch, Platform } from 'react-native';
+import { useDispatch } from 'react-redux';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 
 import Colors from '../constants/Colors';
 import HeaderButton from '../components/HeaderButton';
+import {setFilter} from '../store/actions/meals';
 
 const FilterSwitch = ({ label, state, onChange }) => (
     <View style={styles.filterContainer}>
@@ -23,6 +25,11 @@ const FiltersScreen = ({ navigation }) => {
     const [isVegan, setIsVegan] = useState(false);
     const [isVegetarian, setIsVegetarian] = useState(false);
 
+    const dispatch = useDispatch();
+    const saveFilters = () => {
+        dispatch(setFilter({ isGlutenFree, isLactoseFree, isVegan, isVegetarian }));
+    };
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -32,11 +39,11 @@ const FiltersScreen = ({ navigation }) => {
             ),
             headerRight: () => (
                 <HeaderButtons HeaderButtonComponent={HeaderButton} title='Save Btns'>
-                    <Item title='Save' iconName='ios-save' onPress={() => navigation.goBack()} />
+                    <Item title='Save' iconName='ios-save' onPress={saveFilters} />
                 </HeaderButtons>
             )
         });
-    }, [navigation]);
+    }, [navigation, saveFilters]);
 
     return (
         <View style={styles.screen}>
