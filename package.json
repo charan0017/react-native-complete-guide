@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
+    "@types/react-native": "^0.61.22",
     "babel-preset-expo": "~8.0.0",
     "redux-devtools-extension": "^2.13.8"
   },

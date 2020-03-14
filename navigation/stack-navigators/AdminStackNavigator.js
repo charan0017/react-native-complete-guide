@@ -14,7 +14,7 @@ const AdminStackNavigator = () => (
 );
 
 AdminStackNavigator.navigationOptions = {
-    title: 'User Products',
+    title: 'Admin',
     drawerIcon: drawerConfig => (
         <Ionicons
             name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
