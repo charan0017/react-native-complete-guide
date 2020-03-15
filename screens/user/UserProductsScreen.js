@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, Button, FlatList, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
@@ -9,17 +9,32 @@ import Colors from '../../constants/Colors';
 import * as productsActions from '../../store/actions/products';
 
 const UserProductsScreen = ({ navigation }) => {
+    const [error, setError] = useState(null);
     const userProducts = useSelector(state => state.products.userProducts);
     const dispatch = useDispatch();
 
     const editProductHandler = (productId) => navigation.navigate('EditProduct', { productId });
 
+    const deleteProductHandler = async (productId) => {
+        setError(null);
+        try {
+            await dispatch(productsActions.deleteProduct(productId));
+        } catch (e) {
+            setError(e.message);
+        }
+    };
+
     const deleteHandler = (productId) => {
         Alert.alert('Are you sure?', 'Do you really want to delete this item?', [
-            { text: 'Yes', style: 'destructive', onPress: () => dispatch(productsActions.deleteProduct(productId)) },
+            { text: 'Yes', style: 'destructive', onPress: () => deleteProductHandler(productId)},
             { text: 'No', style: 'default' },
         ])
     };
+
+    useEffect(() => {
+        if (!error) return;
+        Alert.alert('An error occurred!', error, [{ text: 'Okay' }]);
+    }, [error]);
 
     return (
         <FlatList

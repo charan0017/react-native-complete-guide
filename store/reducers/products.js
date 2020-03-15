@@ -1,5 +1,5 @@
 import PRODUCTS from '../../data/dummy-data';
-import { DELETE_PRODUCT, CREATE_PRODUCT, UPDATE_PRODUCT } from '../actions/products';
+import { DELETE_PRODUCT, CREATE_PRODUCT, UPDATE_PRODUCT, SET_PRODUCTS } from '../actions/products';
 import Product from '../../models/product';
 
 const initialState = {
@@ -9,9 +9,17 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
+        case SET_PRODUCTS: {
+            const { products } = action.payload;
+            return {
+                ...state,
+                availableProducts: products,
+                userProducts: products.filter(prod => prod.ownerId === 'u1')
+            };
+        }
         case CREATE_PRODUCT: {
-            const { title, imageUrl, description, price } = action.payload;
-            const newProduct = new Product(Date.now().toString(), 'u1', title, imageUrl, description, price);
+            const { id, title, imageUrl, description, price } = action.payload;
+            const newProduct = new Product(id, 'u1', title, imageUrl, description, price);
             return {
                 ...state,
                 availableProducts: [newProduct].concat(state.availableProducts),
@@ -36,10 +44,11 @@ export default (state = initialState, action) => {
             return nextState;
         }
         case DELETE_PRODUCT: {
+            const { pid } = action.payload;
             return {
                 ...state,
-                userProducts: state.userProducts.filter(product => product.id !== action.payload),
-                availableProducts: state.availableProducts.filter(product => product.id !== action.payload)
+                userProducts: state.userProducts.filter(product => product.id !== pid),
+                availableProducts: state.availableProducts.filter(product => product.id !== pid)
             }
         }
         default: return state;
