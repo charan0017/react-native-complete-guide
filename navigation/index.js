@@ -1,5 +1,5 @@
-import ShopNavigator from './ShopNavigator';
+import MainNavigator from './MainNavigator';
 
 export {
-    ShopNavigator,
+    MainNavigator,
 };

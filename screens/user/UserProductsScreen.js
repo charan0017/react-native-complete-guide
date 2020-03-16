@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Button, FlatList, StyleSheet } from 'react-native';
+import { Alert, Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
@@ -35,6 +35,15 @@ const UserProductsScreen = ({ navigation }) => {
         if (!error) return;
         Alert.alert('An error occurred!', error, [{ text: 'Okay' }]);
     }, [error]);
+
+    if (!userProducts.length) {
+        return (
+            <View style={styles.center}>
+                <Text style={styles.text}>No products found maybe start creating some!</Text>
+                <Button title='Add Product' onPress={() => navigation.navigate('EditProduct')} color={Colors.primary} />
+            </View>
+        );
+    }
 
     return (
         <FlatList
@@ -78,6 +87,15 @@ UserProductsScreen.navigationOptions = ({ navigation }) => {
     };
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    text: {
+        textAlign: 'center'
+    }
+});
 
 export default UserProductsScreen;

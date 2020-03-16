@@ -55,6 +55,14 @@ const OrdersScreen = ({ navigation }) => {
         );
     }
 
+    if (!orders.length) {
+        return (
+            <View style={styles.center}>
+                <Text style={styles.text}>No orders found maybe start ordering some products?</Text>
+            </View>
+        );
+    }
+
     return (
         <FlatList
             onRefresh={loadOrders}
@@ -91,6 +99,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    text: {
+        textAlign: 'center'
     }
 });
 

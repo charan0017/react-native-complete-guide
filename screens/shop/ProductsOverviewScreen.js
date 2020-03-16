@@ -30,10 +30,7 @@ const ProductsOverviewScreen = ({ navigation }) => {
     }, [dispatch, setIsLoading, setError]);
 
     useEffect(() => {
-        const willFocusSub = navigation.addListener('willFocus', loadProducts);
-        return () => {
-            willFocusSub.remove();
-        };
+        return navigation.addListener('focus', loadProducts);
     }, [loadProducts]);
 
     useEffect(() => {
@@ -44,7 +41,7 @@ const ProductsOverviewScreen = ({ navigation }) => {
     if (error) {
         return (
             <View style={styles.center}>
-                <Text>{error}</Text>
+                <Text style={styles.text}>{error}</Text>
                 <Button title='Try Again!' onPress={loadProducts} color={Colors.primary} />
             </View>
         );
@@ -61,7 +58,7 @@ const ProductsOverviewScreen = ({ navigation }) => {
     if (!isLoading && !products.length) {
         return (
             <View style={styles.center}>
-                <Text>No products found. Maybe start adding some!</Text>
+                <Text style={styles.text}>No products found. Maybe start adding some!</Text>
             </View>
         );
     }
@@ -115,6 +112,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    text: {
+        textAlign: 'center'
     }
 });
 

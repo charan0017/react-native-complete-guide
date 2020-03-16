@@ -12,8 +12,8 @@ const drawerContentOptions = {
 };
 
 const { Navigator, Screen } = createDrawerNavigator();
-const CreateDrawerNavigator = ({ screens }) => (
-    <Navigator drawerContentOptions={drawerContentOptions}>
+const CreateDrawerNavigator = ({ screens, drawerContent }) => (
+    <Navigator drawerContentOptions={drawerContentOptions} drawerContent={drawerContent || null}>
         {screens.map(({ name, component }) => CreateScreen(Screen, name, component))}
     </Navigator>
 );
