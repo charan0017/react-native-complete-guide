@@ -1,51 +1,46 @@
-import React, { useState } from 'react';
-import { enableScreens } from 'react-native-screens';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import ReduxThunk from 'redux-thunk';
-
-import { MainNavigator } from './navigation';
-import placesReducer from './store/reducers/places';
-import { init } from './helpers/db';
-
-init()
-    .then(console.log('Initialized database'))
-    .catch((err) => {
-        console.log('Initialized db failed!');
-        console.log(err);
-    });
-
-const rootReducer = combineReducers({
-    places: placesReducer,
-});
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
-
-const fetchFonts = () => {
-    return Font.loadAsync({
-        'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
-        'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
-    });
-};
-
-enableScreens();
+import React from 'react';
+import { StyleSheet, View, Text, Button } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 
 const App = () => {
-    const [fontLoaded, setFontLoaded] = useState(false);
+    const pickImage = () => {
+        const options = {
+            title: 'Select Avatar',
+            customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
 
-    if (!fontLoaded) {
-        return <AppLoading startAsync={fetchFonts} onFinish={() => setFontLoaded(true)} />;
-    }
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                const source = { uri: response.uri };
+                console.log(source);
+            }
+        });
+    };
 
     return (
-        <SafeAreaProvider>
-            <Provider store={store}>
-                <MainNavigator />
-            </Provider>
-        </SafeAreaProvider>
+        <View style={styles.screen}>
+            <Button title='Take Image' onPress={pickImage} />
+        </View>
     );
 };
+
+const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+});
 
 export default App;
